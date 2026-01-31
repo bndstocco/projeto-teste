@@ -1,0 +1,17 @@
+{
+    "name": "aoexe/api-crud",
+    "autoload": {
+        "psr-4": {
+            "Aoexe\\ApiCrud\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "bndstocco",
+            "email": "bndst77@gmail.com"
+        }
+    ],
+    "require": {
+        "firebase/php-jwt": "^7.0"
+    }
+}
