@@ -6,6 +6,7 @@ class Router {
 
     public function route() {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri = rtrim($uri, '/'); // remove barra final
         $method = $_SERVER['REQUEST_METHOD'];
         $controller = new UserController();
 
@@ -44,11 +45,8 @@ class Router {
 
         $token = trim(str_replace('Bearer ', '', $authHeader));
 
-        if (!JWT::validate($token)) {
-            http_response_code(401);
-            echo json_encode(['error' => 'Invalid or expired token']);
-            exit;
-        }
+        // ✅ Correção: substitui validate() por verify()
+        $payload = JWT::verify($token); // se inválido, já retorna 401 JSON
 
         // -----------------------------
         // ROTAS USERS

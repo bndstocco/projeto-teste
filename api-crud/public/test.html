@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>API CRUD Test</title>
+</head>
+<body>
+<h1>API CRUD PHP MVC - Test</h1>
+
+<!-- REGISTER -->
+<h2>Register</h2>
+<input type="text" id="regName" placeholder="Name">
+<input type="email" id="regEmail" placeholder="Email">
+<input type="password" id="regPassword" placeholder="Password">
+<button onclick="register()">Register</button>
+
+<!-- LOGIN -->
+<h2>Login</h2>
+<input type="email" id="loginEmail" placeholder="Email">
+<input type="password" id="loginPassword" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<!-- USERS -->
+<h2>Users</h2>
+<button onclick="listUsers()">List Users</button>
+<ul id="usersList"></ul>
+
+<script>
+let token = ''; // aqui armazenamos o JWT
+
+// ---------------- REGISTER ----------------
+async function register() {
+    const name = document.getElementById('regName').value;
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPassword').value;
+
+    const response = await fetch('http://localhost:8000/register', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ name, email, password })
+    });
+
+    const data = await response.json();
+    console.log(data);
+    alert(JSON.stringify(data));
+}
+
+// ---------------- LOGIN ----------------
+async function login() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    const response = await fetch('http://localhost:8000/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ email, password })
+    });
+
+    if (!response.ok) {
+        const err = await response.json();
+        console.error(err);
+        alert(JSON.stringify(err));
+        return;
+    }
+
+    const data = await response.json();
+    token = data.token;
+    console.log('Token:', token);
+    alert('Login successful! Token stored.');
+}
+
+// ---------------- LIST USERS ----------------
+async function listUsers() {
+    if (!token) {
+        alert('Faça login primeiro!');
+        return;
+    }
+
+    const response = await fetch('http://localhost:8000/users', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    });
+
+    if (!response.ok) {
+        const err = await response.json();
+        console.error(err);
+        alert(JSON.stringify(err));
+        return;
+    }
+
+    const users = await response.json();
+    console.log(users);
+
+    const ul = document.getElementById('usersList');
+    ul.innerHTML = '';
+    users.forEach(user => {
+        const li = document.createElement('li');
+        li.textContent = `ID: ${user.id} | Name: ${user.name} | Email: ${user.email}`;
+        ul.appendChild(li);
+    });
+}
+
+// ---------------- UPDATE USER ----------------
+async function updateUser(id, name, email) {
+    if (!token) { alert('Faça login primeiro!'); return; }
+
+    const response = await fetch(`http://localhost:8000/users/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ name, email })
+    });
+
+    const data = await response.json();
+    console.log(data);
+    alert(JSON.stringify(data));
+}
+
+// ---------------- DELETE USER ----------------
+async function deleteUser(id) {
+    if (!token) { alert('Faça login primeiro!'); return; }
+
+    const response = await fetch(`http://localhost:8000/users/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    });
+
+    const data = await response.json();
+    console.log(data);
+    alert(JSON.stringify(data));
+}
+</script>
+</body>
+</html>
