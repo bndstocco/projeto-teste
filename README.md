@@ -69,7 +69,7 @@ Authorization: Bearer <token>
 
 O frontend consome a API CRUD PHP MVC com JWT. Permite registrar usuários, fazer login, listar, atualizar e deletar usuários.
 
-##Configuração do projeto
+## Configuração do projeto
 
 Criar projeto React:
 
