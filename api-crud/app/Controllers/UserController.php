@@ -10,100 +10,93 @@ class UserController {
         header('Content-Type: application/json');
     }
 
-    public function register() {
-        $data = json_decode(file_get_contents("php://input"), true);
-        if (!$data || !isset($data['name'], $data['email'], $data['password'])) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Name, email and password are required']);
-            return;
-        }
-        if ($this->userModel->findByEmail($data['email'])) {
-            http_response_code(409);
-            echo json_encode(['error' => 'Email already exists']);
-            return;
-        }
-        $this->userModel->create($data['name'], $data['email'], $data['password']);
-        echo json_encode(['message' => 'User registered successfully']);
+    // Função auxiliar para ler dados JSON
+    private function getJsonData() {
+        return json_decode(file_get_contents("php://input"), true) ?? [];
     }
 
-    public function login() {
-        $data = json_decode(file_get_contents("php://input"), true);
-        if (!$data || !isset($data['email'], $data['password'])) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Email and password required']);
-            return;
+    // Função auxiliar para enviar resposta
+    private function respond($data, $status = 200) {
+        http_response_code($status);
+        echo json_encode($data);
+        exit;
+    }
+
+    // Função auxiliar para validação de campos
+    private function validateFields(array $data, array $fields) {
+        foreach ($fields as $field) {
+            if (empty($data[$field])) {
+                $this->respond(['error' => implode(', ', $fields) . ' required'], 400);
+            }
         }
+    }
+
+    // Registro / Criação de usuário
+    public function register() {
+        $data = $this->getJsonData();
+        $this->validateFields($data, ['name', 'email', 'password']);
+
+        if ($this->userModel->findByEmail($data['email'])) {
+            $this->respond(['error' => 'Email already exists'], 409);
+        }
+
+        $this->userModel->create($data['name'], $data['email'], $data['password']);
+        $this->respond(['message' => 'User registered successfully']);
+    }
+
+    // Login
+    public function login() {
+        $data = $this->getJsonData();
+        $this->validateFields($data, ['email', 'password']);
 
         $user = $this->userModel->findByEmail($data['email']);
-        if (!$user) {
-            http_response_code(401);
-            echo json_encode(['error' => 'User not found']);
-            return;
+        if (!$user || !password_verify($data['password'], $user['password'])) {
+            $this->respond(['error' => 'Invalid credentials'], 401);
         }
 
-        if (password_verify($data['password'], $user['password'])) {
-            $token = JWT::generate(['id' => $user['id'], 'email' => $user['email']]);
-            echo json_encode(['token' => $token]);
-        } else {
-            http_response_code(401);
-            echo json_encode(['error' => 'Invalid credentials']);
-        }
+        $token = JWT::generate(['id' => $user['id'], 'email' => $user['email']]);
+        $this->respond(['token' => $token]);
     }
 
+    // Listar todos usuários
     public function index() {
-        $users = $this->userModel->getAll();
-        echo json_encode($users);
+        $this->respond($this->userModel->getAll());
     }
 
+    // Mostrar usuário específico
     public function show($id) {
         $user = $this->userModel->getById($id);
-        if ($user) {
-            echo json_encode($user);
-        } else {
-            http_response_code(404);
-            echo json_encode(['error' => 'User not found']);
+        if (!$user) {
+            $this->respond(['error' => 'User not found'], 404);
         }
+        $this->respond($user);
     }
 
+    // Criar usuário (mesma lógica do register)
     public function store() {
-        $data = json_decode(file_get_contents("php://input"), true);
-        if (!$data || !isset($data['name'], $data['email'], $data['password'])) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Name, email and password are required']);
-            return;
-        }
-        if ($this->userModel->findByEmail($data['email'])) {
-            http_response_code(409);
-            echo json_encode(['error' => 'Email already exists']);
-            return;
-        }
-        $this->userModel->create($data['name'], $data['email'], $data['password']);
-        echo json_encode(['message' => 'User created successfully']);
+        $this->register();
     }
 
+    // Atualizar usuário
     public function update($id) {
-        $data = json_decode(file_get_contents("php://input"), true);
-        if (!$data || !isset($data['name'], $data['email'])) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Name and email are required']);
-            return;
-        }
+        $data = $this->getJsonData();
+        $this->validateFields($data, ['name', 'email']);
+
         if (!$this->userModel->getById($id)) {
-            http_response_code(404);
-            echo json_encode(['error' => 'User not found']);
-            return;
+            $this->respond(['error' => 'User not found'], 404);
         }
+
         $this->userModel->update($id, $data['name'], $data['email']);
-        echo json_encode(['message' => 'User updated successfully']);
+        $this->respond(['message' => 'User updated successfully']);
     }
 
+    // Deletar usuário
     public function delete($id) {
         if (!$this->userModel->getById($id)) {
-            http_response_code(404);
-            echo json_encode(['error' => 'User not found']);
-            return;
+            $this->respond(['error' => 'User not found'], 404);
         }
+
         $this->userModel->delete($id);
-        echo json_encode(['message' => 'User deleted successfully']);
+        $this->respond(['message' => 'User deleted successfully']);
     }
 }

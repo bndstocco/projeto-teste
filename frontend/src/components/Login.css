@@ -1,0 +1,77 @@
+/* Container centralizado na tela */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #00a9de, #001133);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Card do login */
+.login-card {
+  background-color: #ffffff;
+  padding: 30px 30px; /* menos padding no topo para reduzir espaço */
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.login-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Título */
+.login-card h3 {
+  margin-bottom: 20px; /* menos espaçamento abaixo do título */
+  color: #001133;
+  font-size: 1.8rem;
+}
+
+/* Inputs */
+.login-card input {
+  width: 75%;
+  padding: 12px 15px;
+  margin-bottom: 15px; /* reduz margem entre inputs */
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+.login-card input:focus {
+  border-color: #00a9de;
+  outline: none;
+  box-shadow: 0 0 8px rgba(0,169,222,0.3);
+}
+
+/* Botão */
+.login-card button {
+  width: 83%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #00a9de;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 15px; /* adiciona espaçamento acima do botão */
+  margin-bottom: 20px; /* adiciona espaçamento abaixo do botão */
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.login-card button:hover {
+  background: #007bb5;
+  transform: translateY(-2px);
+}
+
+/* Responsivo */
+@media (max-width: 500px) {
+  .login-card {
+    padding: 25px 20px; /* reduz padding em telas pequenas */
+  }
+}

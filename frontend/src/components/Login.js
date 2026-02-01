@@ -1,5 +1,6 @@
 import { useState } from "react";
 import api from "../api/api";
+import "./Login.css"; // importa o CSS
 
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -17,23 +18,27 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Login</h3>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Senha"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Entrar</button>
-    </form>
+    <div className="login-container">
+      <div className="login-card">
+        <h3>Login</h3>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Senha"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Entrar</button>
+        </form>
+      </div>
+    </div>
   );
 }

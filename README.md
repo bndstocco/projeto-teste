@@ -64,3 +64,26 @@ Authorization: Bearer <token>
 - Senhas armazenadas com **hash seguro (bcrypt)**  
 - Seguindo padrão **MVC**, fácil de expandir  
 - JWT controla acesso às rotas sensíveis
+
+## Frontend React
+
+O frontend consome a API CRUD PHP MVC com JWT. Permite registrar usuários, fazer login, listar, atualizar e deletar usuários.
+
+## Configuração do projeto
+
+Criar projeto React:
+
+npx create-react-app frontend
+cd frontend
+
+
+## Instalar dependências (opcional, mas recomendado para requisições HTTP):
+
+npm install axios
+
+Rodando o frontend
+npm start
+
+
+O app abrirá em http://localhost:3000.
+A API deve estar rodando em http://localhost:8000.
