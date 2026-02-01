@@ -88,4 +88,4 @@ npm start
 O app abrirá em http://localhost:3000.
 A API deve estar rodando em http://localhost:8000.
 
-Pull request feito com sucesso no pr. Tudo Ok de verdade
+Pull request feito com sucesso no pr.
