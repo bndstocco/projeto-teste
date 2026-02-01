@@ -14,15 +14,17 @@ export default function UserForm({ selectedUser, onSuccess }) {
     }
   }, [selectedUser]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     try {
       if (selectedUser) {
-        await api.put("/users", { id: selectedUser.id, name, email, password });
+        await api.put(`/users/${selectedUser.id}`, { name, email, password });
       } else {
         await api.post("/users", { name, email, password });
       }
-      setName(""); setEmail(""); setPassword("");
+      setName("");
+      setEmail("");
+      setPassword("");
       onSuccess();
     } catch (err) {
       alert(err.response?.data?.error || "Erro ao salvar usuário");
@@ -36,21 +38,21 @@ export default function UserForm({ selectedUser, onSuccess }) {
         type="text"
         placeholder="Nome"
         value={name}
-        onChange={(e) => setName(e.target.value)}
+        onChange={e => setName(e.target.value)}
         required
       />
       <input
         type="email"
         placeholder="Email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={e => setEmail(e.target.value)}
         required
       />
       <input
         type="password"
         placeholder="Senha"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={e => setPassword(e.target.value)}
         required={!selectedUser}
       />
       <button type="submit">{selectedUser ? "Atualizar" : "Criar"}</button>

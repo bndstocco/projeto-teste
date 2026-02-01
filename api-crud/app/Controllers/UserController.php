@@ -10,7 +10,6 @@ class UserController {
         header('Content-Type: application/json');
     }
 
-    // POST /register
     public function register() {
         $data = json_decode(file_get_contents("php://input"), true);
         if (!$data || !isset($data['name'], $data['email'], $data['password'])) {
@@ -27,7 +26,6 @@ class UserController {
         echo json_encode(['message' => 'User registered successfully']);
     }
 
-    // POST /login
     public function login() {
         $data = json_decode(file_get_contents("php://input"), true);
         if (!$data || !isset($data['email'], $data['password'])) {
@@ -52,13 +50,11 @@ class UserController {
         }
     }
 
-    // GET /users
     public function index() {
         $users = $this->userModel->getAll();
         echo json_encode($users);
     }
 
-    // GET /users/{id}
     public function show($id) {
         $user = $this->userModel->getById($id);
         if ($user) {
@@ -69,7 +65,6 @@ class UserController {
         }
     }
 
-    // POST /users
     public function store() {
         $data = json_decode(file_get_contents("php://input"), true);
         if (!$data || !isset($data['name'], $data['email'], $data['password'])) {
@@ -86,7 +81,6 @@ class UserController {
         echo json_encode(['message' => 'User created successfully']);
     }
 
-    // PUT /users/{id}
     public function update($id) {
         $data = json_decode(file_get_contents("php://input"), true);
         if (!$data || !isset($data['name'], $data['email'])) {
@@ -103,7 +97,6 @@ class UserController {
         echo json_encode(['message' => 'User updated successfully']);
     }
 
-    // DELETE /users/{id}
     public function delete($id) {
         if (!$this->userModel->getById($id)) {
             http_response_code(404);
