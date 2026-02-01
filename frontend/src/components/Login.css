@@ -6,12 +6,14 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #00a9de, #001133);
   font-family: 'Poppins', sans-serif;
+  padding: 20px; /* garante espaço nas bordas em telas pequenas */
+  box-sizing: border-box;
 }
 
 /* Card do login */
 .login-card {
   background-color: #ffffff;
-  padding: 30px 30px; /* menos padding no topo para reduzir espaço */
+  padding: 30px 30px;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   width: 100%;
@@ -26,20 +28,21 @@
 
 /* Título */
 .login-card h3 {
-  margin-bottom: 20px; /* menos espaçamento abaixo do título */
+  margin-bottom: 20px;
   color: #001133;
   font-size: 1.8rem;
 }
 
 /* Inputs */
 .login-card input {
-  width: 75%;
+  width: 100%; /* ocupa 100% do card, melhor para responsividade */
   padding: 12px 15px;
-  margin-bottom: 15px; /* reduz margem entre inputs */
+  margin-bottom: 15px;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 1rem;
-  transition: border 0.3s ease;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
 }
 
 .login-card input:focus {
@@ -50,7 +53,7 @@
 
 /* Botão */
 .login-card button {
-  width: 83%;
+  width: 100%; /* ocupa toda a largura do card */
   padding: 12px;
   border: none;
   border-radius: 8px;
@@ -59,8 +62,8 @@
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  margin-top: 15px; /* adiciona espaçamento acima do botão */
-  margin-bottom: 20px; /* adiciona espaçamento abaixo do botão */
+  margin-top: 15px;
+  margin-bottom: 20px;
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
@@ -69,9 +72,40 @@
   transform: translateY(-2px);
 }
 
-/* Responsivo */
+/* Responsivo para telas pequenas */
 @media (max-width: 500px) {
   .login-card {
-    padding: 25px 20px; /* reduz padding em telas pequenas */
+    padding: 25px 20px;
+  }
+
+  .login-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .login-card input, .login-card button {
+    font-size: 1rem;
+    padding: 10px 12px;
+  }
+}
+
+/* Responsivo médio (tablet) */
+@media (max-width: 768px) {
+  .login-card {
+    max-width: 350px;
+  }
+
+  .login-card h3 {
+    font-size: 1.6rem;
+  }
+}
+
+/* Grandes telas */
+@media (min-width: 1200px) {
+  .login-card {
+    max-width: 450px;
+  }
+
+  .login-card h3 {
+    font-size: 2rem;
   }
 }

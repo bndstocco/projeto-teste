@@ -1,3 +1,4 @@
+/* Container centralizado da lista */
 .list-container {
   max-width: 700px;
   margin: 30px auto;
@@ -5,20 +6,25 @@
   background-color: #f5f8ff;
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }
 
+/* Título */
 .list-container h3 {
   text-align: center;
   color: #001133;
   margin-bottom: 20px;
+  font-size: 1.6rem;
 }
 
+/* Lista de usuários */
 .user-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
+/* Item da lista */
 .user-list li {
   display: flex;
   justify-content: space-between;
@@ -27,15 +33,18 @@
   border-bottom: 1px solid #ddd;
   border-radius: 8px;
   transition: background 0.2s ease;
+  flex-wrap: wrap; /* permite quebra em telas pequenas */
 }
 
 .user-list li:hover {
   background-color: #e0f0ff;
 }
 
+/* Informações do usuário */
 .user-info {
   display: flex;
   flex-direction: column;
+  margin-bottom: 8px; /* espaço para mobile */
 }
 
 .user-name {
@@ -48,14 +57,22 @@
   color: #555;
 }
 
+/* Ações do usuário */
+.user-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
 .user-actions button {
   padding: 6px 12px;
-  margin-left: 5px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.3s ease;
+  flex: 1; /* permite preencher espaço em telas pequenas */
+  min-width: 80px;
 }
 
 .user-actions .edit {
@@ -74,4 +91,65 @@
 
 .user-actions .delete:hover {
   background-color: #c12b00;
+}
+
+/* ------------------- */
+/* RESPONSIVO - MOBILE */
+/* ------------------- */
+@media (max-width: 500px) {
+  .list-container {
+    padding: 20px;
+    margin: 20px 10px;
+  }
+
+  .list-container h3 {
+    font-size: 1.4rem;
+  }
+
+  .user-list li {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 12px;
+  }
+
+  .user-actions button {
+    flex: 1 1 100%;
+    margin-top: 5px;
+    font-size: 0.85rem;
+  }
+}
+
+/* ------------------- */
+/* RESPONSIVO - TABLET */
+/* ------------------- */
+@media (max-width: 768px) {
+  .list-container {
+    max-width: 95%;
+    padding: 20px;
+  }
+
+  .list-container h3 {
+    font-size: 1.5rem;
+  }
+
+  .user-actions button {
+    font-size: 0.9rem;
+  }
+}
+
+/* ------------------- */
+/* RESPONSIVO - TELAS GRANDES */
+/* ------------------- */
+@media (min-width: 1200px) {
+  .list-container {
+    max-width: 750px;
+  }
+
+  .list-container h3 {
+    font-size: 1.8rem;
+  }
+
+  .user-actions button {
+    font-size: 1rem;
+  }
 }
